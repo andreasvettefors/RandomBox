@@ -23,7 +23,7 @@ jobs:
     steps:
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
       - run: env
-      - run: echo "$ASECRETVARIABLE"
+      - run: echo "${{ vars.ASECRETVARIABLE }}"
     
      
   
