@@ -22,7 +22,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "${{secrets.ASECRETVARIABLE}}"
+      - run: echo "${{env.ASECRETVARIABLE}}"
     
      
   
