@@ -20,5 +20,5 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-
-          path: ./app/build/outputs/aar
+          name: randombox.aar
+          path: ./app/build/outputs/aar/app-release.aar
