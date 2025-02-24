@@ -5,10 +5,6 @@ on:
 
 jobs:
   build:
-
-    permissions:
-      contents: write
-
     name: Release
     runs-on: ubuntu-latest
       
