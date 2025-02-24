@@ -22,6 +22,9 @@ jobs:
       - run: env
       - run: echo "${{ vars.ASECRETVARIABLE }}"
       - run: echo "${{ github.ref_name }}"
+      - name: "Get library version"
+        run: echo "VERSION_NAME=$( ./gradlew -q app:getLibraryVersion )" >> $GITHUB_ENV
+      - run: echo "${{ env.VERSION_NAME }}"
     
      
   

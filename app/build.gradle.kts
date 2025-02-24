@@ -6,6 +6,8 @@ plugins {
     id("maven-publish")
 }
 
+val libraryVersion = "0.1.3"
+
 android {
     namespace = "Api"
     compileSdk = 34
@@ -106,4 +108,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
+}
+
+tasks.register("getLibraryVersion") {
+    println(libraryVersion)
 }
