@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "se.vettefors.randombox"
+    namespace = "Api"
     compileSdk = 34
 
     defaultConfig {
@@ -40,11 +40,32 @@ android {
     }
 }
 
+dokka {
+    dokkaSourceSets.main {
+
+        /*perPackageOption {
+// Match all packages and suppress them
+            matchingRegex.set("(.*?)")
+            suppress.set(true)
+        }*/
+
+        perPackageOption {
+// Match all packages and suppress them
+            matchingRegex.set("(\\S*randombox.\\S*)")
+            suppress.set(false)
+        }
+
+        // contains descriptions for the module and the packages
+    }
+
+}
+
+
 afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                groupId = "se.vettefors.randombox"
+                groupId = "Api"
                 artifactId = "randombox"
                 version = "0.1.0"
 

@@ -1,0 +1,41 @@
+site_name: My Docs
+
+site: html
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: black
+      accent: orange
+      toggle:
+        icon: octicons/sun-24
+        name: "Switch to Dark Mode"
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: orange
+      toggle:
+        icon: octicons/moon-24
+        name: "Switch to Light Mode"
+  features:
+    - navigation.tabs
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+
+nav:
+  - Welcome: index.md
+  - Api:
+    - Top level: Api/index.md
+    - Random Box: Api/random_box.md
+  - Api reference: Api reference/index.html
+
+

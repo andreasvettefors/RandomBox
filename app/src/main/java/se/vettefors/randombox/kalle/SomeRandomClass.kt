@@ -1,4 +1,4 @@
-package se.vettefors.randombox
+package se.vettefors.randombox.kalle
 
 /**
  * Just a random class that is completely useless
