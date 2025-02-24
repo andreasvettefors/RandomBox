@@ -5,6 +5,10 @@ on:
 
 jobs:
   build:
+
+    permissions:
+      contents: write
+
     name: Release
     runs-on: ubuntu-latest
       
@@ -28,6 +32,7 @@ jobs:
       - name: Get library version
         run: echo "VERSION_NAME=$( ./gradlew -q app:getLibraryVersion )" >> $GITHUB_ENV
       - run: echo "${{ env.VERSION_NAME }}"
+      - run: echo "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Create release
         id: create_release
