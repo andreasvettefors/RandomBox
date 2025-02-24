@@ -10,15 +10,29 @@ jobs:
       
     steps:
       - uses: actions/checkout@v4
+
       - name: set up JDK
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
+
       - name: Build artifact
         run: ./gradlew assemble
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: randombox.aar
           path: ./app/build/outputs/aar/app-release.aar
+
+      - name: Create release
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="$GITHUB_REF" \
+              --generate-notes
+
+      - run: echo "${{ steps.create_release.outputs.upload_url }}"
