@@ -21,7 +21,7 @@ jobs:
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
       - run: env
       - run: echo "${{ vars.ASECRETVARIABLE }}"
-      - run: echo "${{ github }}"
+      - run: echo "${{ github.ref_name }}"
     
      
   
