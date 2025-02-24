@@ -38,6 +38,6 @@ jobs:
         run: |
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \
-              --title="$tag-$GITHUB_REF" \
+              --title="$tag-$github.ref_name" \
 
       - run: echo "${{ steps.create_release.outputs.upload_url }}"
