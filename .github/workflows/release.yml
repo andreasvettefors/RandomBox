@@ -25,13 +25,18 @@ jobs:
         with:
           path: ./app/build/outputs/aar/app-release.aar
 
+      - name: Get library version
+        run: echo "VERSION_NAME=$( ./gradlew -q app:getLibraryVersion )" >> $GITHUB_ENV
+      - run: echo "${{ env.VERSION_NAME }}"
+
       - name: Create release
         id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.VERSION_NAME }}
         run: |
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \
-              --title="$GITHUB_REF" \
+              --title="$tag-$GITHUB_REF" \
 
       - run: echo "${{ steps.create_release.outputs.upload_url }}"
