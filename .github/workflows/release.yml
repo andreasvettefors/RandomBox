@@ -33,6 +33,5 @@ jobs:
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \
               --title="$GITHUB_REF" \
-              --generate-notes
 
       - run: echo "${{ steps.create_release.outputs.upload_url }}"
