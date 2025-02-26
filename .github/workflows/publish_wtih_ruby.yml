@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - run: echo "${{ secrets.A_TOKEN }}"
+
       - name: Publish release
         working-directory: ./app
         run: |
