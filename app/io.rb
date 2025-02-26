@@ -308,7 +308,7 @@ class Commands
   def self.check_new_sdk_version(local_sdk_path, version)
     Logger.info("> Check if version exists in SDK repository")
     _, output = Cmd.run(cmd: "git -C #{local_sdk_path} tag --list", log: false)
-    is_released = output.map { |tag| "#{Version.new(tag)}" }.include? "#{version}"
+    is_released = output.map { |tag| "#{Version.new(tag.delete_prefix('v.'))}" }.include? "#{version}"
     raise Exception.new("The version tag to be published already exists in SDK repository") if is_released
   end
 
