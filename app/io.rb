@@ -338,6 +338,7 @@ class Commands
     success, output = Cmd.run(cmd: "../gradlew getLibraryVersion --no-configuration-cache")
     raise Exception.new("Couldn't get library version from gradle") unless success
     version_string = output[0]
+    Logger.info("#{version_string} retrieved from build.gradle")
     raise Exception.new("Missing <ver> argument") if version_string.nil?
     return Version.new(version_string)
   end
@@ -423,7 +424,7 @@ class Subcommands
     Commands.github_authenticate()
     Commands.check_git_workspace_clean()
 
-    #sdk_repo_url = Paths::URL_REPO_DEV
+    sdk_repo_url = Paths::URL_REPO_DEV
 
     # Build sdk
     Commands.assemble_library()
