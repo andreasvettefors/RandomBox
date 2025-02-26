@@ -22,7 +22,6 @@ end
 # Constants for paths and files
 module Paths
   FILE_GHTOKEN = ".githubtoken.txt"
-  FILE_LIBRARYVERSION = "src/main/java/se/vettefors/randombox/AFile.kt"
 
   FILE_SDK_RELEASE_AAR = "build/outputs/aar/app-release.aar"
 
@@ -184,8 +183,6 @@ end
 class Commands
   # Check github authentication status, if not authenticated try using FILE_GHTOKEN file
   def self.github_authenticate()
-
-    Logger.info("The token in the file -> #{File.read(Paths::FILE_GHTOKEN)}")
     gh_auth_status_check = -> {
       logged_in, output = Cmd.run(cmd: "gh auth status", log: false)
       unless logged_in
@@ -335,15 +332,12 @@ class Commands
     return tag_exists
   end
 
-  # Get current SDK version from LibraryVersion.kt
+  # Get current SDK version from gradle task
   def self.get_library_version()
     version_string = nil
-    File.readlines(Paths::FILE_LIBRARYVERSION).each { |line|
-      if line.include? "var version = "
-        res = line.split('"')
-        version_string = res[1] if res.length > 1
-      end
-    }
+    success, output = Cmd.run(cmd: "../gradlew getLibraryVersion --no-configuration-cache")
+    raise Exception.new("Couldn't get library version from gradle") unless success
+    version_string = output[0]
     raise Exception.new("Missing <ver> argument") if version_string.nil?
     return Version.new(version_string)
   end
@@ -429,7 +423,7 @@ class Subcommands
     Commands.github_authenticate()
     Commands.check_git_workspace_clean()
 
-    sdk_repo_url = Paths::URL_REPO_DEV
+    #sdk_repo_url = Paths::URL_REPO_DEV
 
     # Build sdk
     Commands.assemble_library()
