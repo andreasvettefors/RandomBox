@@ -13,6 +13,8 @@ jobs:
 
       - name: Publish release
         working-directory: ./app
+        env:
+          TOKEN: ${{ secrets.A_TOKEN }}
         run: |
-          echo "${{ secrets.A_TOKEN }}" > .githubtoken.txt
+          echo -n "$TOKEN" > .githubtoken.txt
           ruby io.rb publish
