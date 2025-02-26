@@ -337,7 +337,8 @@ class Commands
     version_string = nil
     success, output = Cmd.run(cmd: "../gradlew getLibraryVersion --no-configuration-cache")
     raise Exception.new("Couldn't get library version from gradle") unless success
-    version_string = output[0]
+    Logger.info("#{output} retrieved from build.gradle")
+    version_string = output.select{|o| o.match(/^([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$/)}[0]
     Logger.info("#{version_string} retrieved from build.gradle")
     raise Exception.new("Missing <ver> argument") if version_string.nil?
     return Version.new(version_string)
