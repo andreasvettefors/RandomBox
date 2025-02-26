@@ -6,7 +6,7 @@ plugins {
     id("maven-publish")
 }
 
-val libraryVersion = "0.1.3"
+val libraryVersion = "1.0.0"
 
 android {
     namespace = "Api"
