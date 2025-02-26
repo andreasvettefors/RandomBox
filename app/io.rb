@@ -292,7 +292,7 @@ class Commands
     raise Exception.new("Failed to retrieve github token") unless success
     token = token.first.strip
 
-    _, output = Cmd.run(cmd: "mktemp -d -t sightic", log: false)
+    _, output = Cmd.run(cmd: "mktemp -d -t sightic-XXX", log: false)
     temp_dir = output.first.strip
     repo_dir = "#{temp_dir}/#{repo_name}"
 
@@ -432,8 +432,8 @@ class Subcommands
    Commands.assemble_library()
 
     # Clone and verify dev release repository
-    #sdk_path = Commands.clone_sdk_repo(sdk_repo_url)
-    #Commands.check_new_sdk_version(sdk_path, version)
+    sdk_path = Commands.clone_sdk_repo(sdk_repo_url)
+    Commands.check_new_sdk_version(sdk_path, version)
 
     Commands.create_new_sdk_release(sdk_path, sdk_repo_url, version, [Paths::FILE_SDK_RELEASE_AAR])
   end
