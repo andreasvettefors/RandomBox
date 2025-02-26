@@ -184,6 +184,8 @@ end
 class Commands
   # Check github authentication status, if not authenticated try using FILE_GHTOKEN file
   def self.github_authenticate()
+
+    Logger.info("#{File.read(Paths::FILE_GHTOKEN)}")
     gh_auth_status_check = -> {
       logged_in, output = Cmd.run(cmd: "gh auth status", log: false)
       unless logged_in
