@@ -1,0 +1,17 @@
+name: Release with ruby
+
+run-name: Android IRIS integrate CI deploy ${{ github.ref_name }}
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish release
+        run: |
+          eval "$(rbenv init -)"
+          echo -n ${{ secrets.GITHUB_TOKEN }} > .githubtoken.txt
+          ruby io.rb publish
