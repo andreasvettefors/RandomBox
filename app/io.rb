@@ -429,11 +429,11 @@ class Subcommands
     sdk_repo_url = Paths::URL_REPO_DEV
 
     # Build sdk
-    Commands.assemble_library()
+   Commands.assemble_library()
 
     # Clone and verify dev release repository
-    sdk_path = Commands.clone_sdk_repo(sdk_repo_url)
-    Commands.check_new_sdk_version(sdk_path, version)
+    #sdk_path = Commands.clone_sdk_repo(sdk_repo_url)
+    #Commands.check_new_sdk_version(sdk_path, version)
 
     Commands.create_new_sdk_release(sdk_path, sdk_repo_url, version, [Paths::FILE_SDK_RELEASE_AAR])
   end
