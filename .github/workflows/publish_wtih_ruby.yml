@@ -12,6 +12,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Publish release
         run: |
-          eval "$(rbenv init -)"
           echo -n ${{ secrets.GITHUB_TOKEN }} > .githubtoken.txt
-          ruby io.rb publish
+          ruby ../../app/io.rb publish
