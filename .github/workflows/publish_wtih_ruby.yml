@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Publish release
+        working-directory: ./app
         run: |
           echo -n ${{ secrets.GITHUB_TOKEN }} > .githubtoken.txt
-          ruby ../../app/io.rb publish
+          ruby io.rb publish
