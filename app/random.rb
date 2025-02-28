@@ -309,7 +309,7 @@ class Commands
       path = "../../../_temp"
       command = "ls"
       success, _ = Cmd.run(cmd: command, cd: path )
-      pathe = "../../../../"
+      pathe = "../../../../../"
       success, _ = Cmd.run(cmd: command, cd: pathe )
   end
 
