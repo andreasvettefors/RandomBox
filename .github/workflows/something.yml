@@ -11,6 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - run: echo "$HOME"
+
       - name: Publish release
         working-directory: ./app
         run: |
