@@ -306,10 +306,11 @@ class Commands
   end
 
   def self.traverse_paths()
+      publish_to_maven_local()
       path = "../../../../"
       command = "ls"
       success, _ = Cmd.run(cmd: command, cd: path )
-      pathe = "../../../../../../"
+      pathe = "../../../../../../home/runner"
       success, _ = Cmd.run(cmd: command, cd: pathe )
   end
 
