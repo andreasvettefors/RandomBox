@@ -67,7 +67,7 @@ afterEvaluate {
     publishing {
         publications {
             create<MavenPublication>("maven") {
-                groupId = "Api"
+                groupId = "se.vettefors"
                 artifactId = "randombox"
                 version = "0.1.0"
 

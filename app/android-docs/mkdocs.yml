@@ -33,9 +33,6 @@ markdown_extensions:
 
 nav:
   - Welcome: index.md
-  - Api:
-    - Top level: Api/index.md
-    - Random Box: Api/random_box.md
   - Api reference: Api reference/index.html
 
 

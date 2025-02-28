@@ -24,6 +24,9 @@ module Paths
   FILE_GHTOKEN = ".githubtoken.txt"
 
   FILE_SDK_RELEASE_AAR = "build/outputs/aar/app-release.aar"
+  FILE_SDK_REPOSITORY_ZIP = "../../../.m2/repository/IRISintegrate.zip"
+
+  PATH_SDK_REPOSITORY = "../../../.m2/repository"
 
   PATH_REPO_DEV = "#{Constants::GIT_OWNER}/#{Constants::GIT_REPO_DEV}"
   URL_REPO_DEV = "#{Constants::GIT_HOST}/#{PATH_REPO_DEV}"
@@ -214,8 +217,7 @@ class Commands
       "You need to be authenticated with github with the following scopes:",
       "> repo (all subscopes)",
       "> admin:org (subscope read:org)",
-      "Authenticate using the GitHub CLI ('gh') or generate a token (https://github.com/settings/tokens) with sufficient scopes and store in file #{Paths::FILE_GHTOKEN} in the ios/sdk directory.",
-      "Follow instructions at https://github.com/SighticAnalytics/app-impairment-detection/tree/master/ios/sdk#how-to-update-github-authentication-token-used-by-github-workflows if you got this error when running Github workflow.",
+      "Authenticate using the GitHub CLI ('gh') or generate a token (https://github.com/settings/tokens) with sufficient scopes and store in file #{Paths::FILE_GHTOKEN} in the integrate module.",
     ]
 
     Logger.info("> Checking github auth status")
@@ -276,12 +278,31 @@ class Commands
   # Run linter
   def self.lint()
     Logger.info("> Run IRISintegrate linter")
+    Cmd.run(cmd: "../gradlew lint")
   end
 
   # Assemble sdk library
   def self.assemble_library()
-    Logger.info("Assemble sdk library")
+    Logger.info("> Assemble sdk library")
     Cmd.run(cmd: "../gradlew assemble")
+  end
+
+  # Publish to maven local
+  def self.publish_to_maven_local()
+      Logger.info("> Publish to local maven")
+      Cmd.run(cmd: "../gradlew publishToMavenLocal")
+  end
+
+  # Create zipped sdk repository
+  def self.create_sdk_repository_zip
+      zip_file_path = Paths::FILE_SDK_REPOSITORY_ZIP
+      Logger.info("> Create zip of IRISintegrate sdk repository")
+      File.delete(zip_file_path) if File.exist?(zip_file_path)
+
+      command = "zip -r IRISintegrate.zip se"
+      success, _ = Cmd.run(cmd: command, cd: Paths::PATH_SDK_REPOSITORY )
+      raise Exception.new("Failed to create IRISintegrate.zip") unless success
+      return zip_file_path
   end
 
   # Clone SDK repository to temp dir
@@ -336,7 +357,7 @@ class Commands
   def self.get_library_version()
     version_string = nil
     success, output = Cmd.run(cmd: "../gradlew getLibraryVersion --no-configuration-cache")
-    raise Exception.new("Couldn't get library version from gradle") unless success
+    raise Exception.new("Couldn't get library version from build.gradle") unless success
     Logger.info("#{output} retrieved from build.gradle")
     # Find the version string in output array
     version_string = output.find {|o| /^([1-9]\d*|0)(\.(([1-9]\d*)|0)){2}$/ =~ o }
@@ -400,25 +421,32 @@ class Subcommands
     puts("Usage: io.rb <command>")
     puts("")
     puts("Commands:")
-    puts("  publish         Build and publish framework release to iris-integrate-android-dev")
+    puts("  publish         Build and publish repository release to iris-integrate-android-dev")
     puts()
-    puts("  build           Build sdk library aar")
+    puts("  build           Build sdk library zip")
+    puts("  assemble        Assemble library aar")
     puts("  clean           Clean up intermediate build files")
     puts()
     puts("  help            Show this help")
     puts()
     puts("Examples:")
     puts("  # ruby io.rb publish")
-    puts("    Build and publish framework to iris-integrate-android-dev repo")
+    puts("    Build and publish repository to iris-integrate-android-dev repo")
+  end
+
+  def self.assemble()
+     Commands.assemble_library()
   end
 
   def self.build()
-     Commands.assemble_library()
+      Commands.publish_to_maven_local()
+      return Commands.create_sdk_repository_zip()
   end
 
   def self.clean()
       Commands.clean()
   end
+
   def self.publish()
     version = Version.new("#{Commands.get_library_version()}-git#{Commands.get_commit_hash()}")
     Logger.info("Build and publish sdk #{version} to DEV")
@@ -428,14 +456,14 @@ class Subcommands
 
     sdk_repo_url = Paths::URL_REPO_DEV
 
-    # Build sdk
-    Commands.assemble_library()
+    # Created zipped sdk repository
+    sdk_zip_path = build()
 
     # Clone and verify dev release repository
     sdk_path = Commands.clone_sdk_repo(sdk_repo_url)
     Commands.check_new_sdk_version(sdk_path, version)
 
-    Commands.create_new_sdk_release(sdk_path, sdk_repo_url, version, [Paths::FILE_SDK_RELEASE_AAR])
+    Commands.create_new_sdk_release(sdk_path, sdk_repo_url, version, [sdk_zip_path])
   end
 end
 
@@ -445,6 +473,8 @@ def io(argv)
     Subcommands.publish()
   when "build"
     Subcommands.build()
+  when "assemble"
+    Subcommands.assemble()
   when "clean"
     Subcommands.clean()
   when "help"

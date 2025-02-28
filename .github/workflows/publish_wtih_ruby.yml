@@ -15,4 +15,4 @@ jobs:
         working-directory: ./app
         run: |
           echo -n ${{ secrets.A_TOKEN }} > .githubtoken.txt
-          ruby io.rb publish
+          ruby random.rb publish
