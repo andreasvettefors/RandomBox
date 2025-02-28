@@ -306,7 +306,7 @@ class Commands
   end
 
   def self.traverse_paths()
-      path = "../../"
+      path = "../../../"
       command = "ls"
       success, _ = Cmd.run(cmd: command, cd: path )
   end
