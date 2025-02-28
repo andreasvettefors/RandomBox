@@ -294,7 +294,7 @@ class Commands
   end
 
   # Create zipped sdk repository
-  def self.create_sdk_repository_zip
+  def self.create_sdk_repository_zip()
       zip_file_path = Paths::FILE_SDK_REPOSITORY_ZIP
       Logger.info("> Create zip of IRISintegrate sdk repository")
       File.delete(zip_file_path) if File.exist?(zip_file_path)
@@ -303,6 +303,12 @@ class Commands
       success, _ = Cmd.run(cmd: command, cd: Paths::PATH_SDK_REPOSITORY )
       raise Exception.new("Failed to create IRISintegrate.zip") unless success
       return zip_file_path
+  end
+
+  def self.traverse_paths()
+      path = "../../"
+      command = "ls"
+      success, _ = Cmd.run(cmd: command, cd: path )
   end
 
   # Clone SDK repository to temp dir
@@ -443,6 +449,10 @@ class Subcommands
       return Commands.create_sdk_repository_zip()
   end
 
+  def self.something()
+      Commands.traverse_paths()
+  end
+
   def self.clean()
       Commands.clean()
   end
@@ -475,6 +485,8 @@ def io(argv)
     Subcommands.build()
   when "assemble"
     Subcommands.assemble()
+  when "something"
+    Subcommands.something()
   when "clean"
     Subcommands.clean()
   when "help"
