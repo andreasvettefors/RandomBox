@@ -290,7 +290,7 @@ class Commands
   # Publish to maven local
   def self.publish_to_maven_local()
       Logger.info("> Publish to local maven")
-      Cmd.run(cmd: "../gradlew publishToMavenLocal")
+      Cmd.run(cmd: "../gradlew -Dmaven.repo.local=/build publishToMavenLocal")
   end
 
   # Create zipped sdk repository
@@ -306,9 +306,11 @@ class Commands
   end
 
   def self.traverse_paths()
-      path = "../../../"
+      path = "../../../_temp"
       command = "ls"
       success, _ = Cmd.run(cmd: command, cd: path )
+      pathe = "../../../../"
+      success, _ = Cmd.run(cmd: command, cd: pathe )
   end
 
   # Clone SDK repository to temp dir
