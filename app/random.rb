@@ -310,13 +310,13 @@ class Commands
       command = "ls"
       success, _ = Cmd.run(cmd: command )
       pathe  ="../"
-            success, _ = Cmd.run(cmd: command , path: pathe)
+            success, _ = Cmd.run(cmd: command , cd: pathe)
       pathee  ="../../"
-            success, _ = Cmd.run(cmd: command , path: pathee)
+            success, _ = Cmd.run(cmd: command , cd: pathee)
       patheee  ="../../../"
-      success, _ = Cmd.run(cmd: command , path: patheee)
+      success, _ = Cmd.run(cmd: command , cd: patheee)
       patheeee  ="../../../../"
-      success, _ = Cmd.run(cmd: command , path: patheeee)
+      success, _ = Cmd.run(cmd: command , cd: patheeee)
   end
 
   # Clone SDK repository to temp dir
