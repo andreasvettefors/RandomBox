@@ -307,11 +307,9 @@ class Commands
 
   def self.traverse_paths()
       publish_to_maven_local()
-      path = "../../../../"
+      path = "build"
       command = "ls"
       success, _ = Cmd.run(cmd: command, cd: path )
-      pathe = "../../../../../../home/runner"
-      success, _ = Cmd.run(cmd: command, cd: pathe )
   end
 
   # Clone SDK repository to temp dir
