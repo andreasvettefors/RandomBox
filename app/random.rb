@@ -290,7 +290,7 @@ class Commands
   # Publish to maven local
   def self.publish_to_maven_local()
       Logger.info("> Publish to local maven")
-      Cmd.run(cmd: "sudo ../gradlew -Dmaven.repo.local=/build publishToMavenLocal")
+      Cmd.run(cmd: "sudo ../gradlew -Dmaven.repo.local=/home/runner/work publishToMavenLocal")
   end
 
   # Create zipped sdk repository
