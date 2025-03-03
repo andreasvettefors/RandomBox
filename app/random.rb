@@ -24,9 +24,9 @@ module Paths
   FILE_GHTOKEN = ".githubtoken.txt"
 
   FILE_SDK_RELEASE_AAR = "build/outputs/aar/app-release.aar"
-  FILE_SDK_REPOSITORY_ZIP = "../../../.m2/repository/IRISintegrate.zip"
+  FILE_SDK_REPOSITORY_ZIP = "#{Dir.home}/.m2/repository/IRISintegrate.zip"
 
-  PATH_SDK_REPOSITORY = "../../../.m2/repository"
+  PATH_SDK_REPOSITORY = "#{Dir.home}/.m2/repository"
 
   PATH_REPO_DEV = "#{Constants::GIT_OWNER}/#{Constants::GIT_REPO_DEV}"
   URL_REPO_DEV = "#{Constants::GIT_HOST}/#{PATH_REPO_DEV}"
@@ -290,7 +290,7 @@ class Commands
   # Publish to maven local
   def self.publish_to_maven_local()
       Logger.info("> Publish to local maven")
-      Cmd.run(cmd: "sudo ../gradlew publishToMavenLocal")
+      Cmd.run(cmd: "../gradlew publishToMavenLocal")
   end
 
   # Create zipped sdk repository
@@ -311,7 +311,6 @@ class Commands
       cdcommand = "cd"
       command = "ls -a"
       success, _ = Cmd.run(cmd: acom )
-
   end
 
   # Clone SDK repository to temp dir
