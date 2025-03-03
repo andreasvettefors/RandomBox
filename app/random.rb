@@ -307,7 +307,7 @@ class Commands
 
   def self.traverse_paths()
       publish_to_maven_local()
-      acom = "cd | ls -a"
+      acom = "cd ; ls -a"
       cdcommand = "cd"
       command = "ls -a"
       success, _ = Cmd.run(cmd: acom )
