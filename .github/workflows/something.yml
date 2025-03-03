@@ -11,8 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: echo "$HOME"
-
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2.2'
