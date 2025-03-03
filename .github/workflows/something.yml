@@ -14,7 +14,8 @@ jobs:
       - run: echo "$HOME"
 
       - uses: ruby/setup-ruby@v1
-
+        with:
+          ruby-version: '3.2.2'
       - name: Publish release
         working-directory: ./app
         run: |
