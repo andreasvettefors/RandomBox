@@ -13,14 +13,10 @@ jobs:
 
       - run: echo "$HOME"
 
-      - run: |
-          ls
-          cd
-          ls
-          
+      - uses: ruby/setup-ruby@v1
 
-      #- name: Publish release
-       # working-directory: ./app
-       # run: |
-          #  echo -n ${{ secrets.A_TOKEN }} > .githubtoken.txt
-        # ruby random.rb something
+      - name: Publish release
+        working-directory: ./app
+        run: |
+         echo -n ${{ secrets.A_TOKEN }} > .githubtoken.txt
+         ruby random.rb something
