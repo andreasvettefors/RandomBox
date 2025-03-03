@@ -432,7 +432,6 @@ class Subcommands
     puts("  publish         Build and publish repository release to iris-integrate-android-dev")
     puts()
     puts("  build           Build sdk library zip")
-    puts("  assemble        Assemble library aar")
     puts("  clean           Clean up intermediate build files")
     puts()
     puts("  help            Show this help")
@@ -442,17 +441,9 @@ class Subcommands
     puts("    Build and publish repository to iris-integrate-android-dev repo")
   end
 
-  def self.assemble()
-     Commands.assemble_library()
-  end
-
   def self.build()
       Commands.publish_to_maven_local()
       return Commands.create_sdk_repository_zip()
-  end
-
-  def self.something()
-      Commands.traverse_paths()
   end
 
   def self.clean()
@@ -485,10 +476,6 @@ def io(argv)
     Subcommands.publish()
   when "build"
     Subcommands.build()
-  when "assemble"
-    Subcommands.assemble()
-  when "something"
-    Subcommands.something()
   when "clean"
     Subcommands.clean()
   when "help"
