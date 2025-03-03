@@ -16,6 +16,6 @@ jobs:
       - name: Publish release
         working-directory: ./app
         run: |
-          eval "$(rbenv init -)"
+          eval rbenv install
           echo -n ${{ secrets.A_TOKEN }} > .githubtoken.txt
           ruby random.rb something
