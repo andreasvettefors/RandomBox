@@ -17,7 +17,7 @@ module Constants
   GIT_HOST = "https://github.com"
   GIT_OWNER = "andreasvettefors"
   GIT_REPO_DEV = "RandomBox"
-  SDK_DOCS_BRANCH = "site"
+  SDK_DOCS_BRANCH = "docs"
 end
 
 # Constants for paths and files
@@ -458,7 +458,7 @@ class Commands
 
     # Switch to docs branch, create branch if it does not exist yet
     if sdk_docs_branch_exists
-      Cmd.run(cmd: "git -C #{local_sdk_path} switch  #{sdk_docs_branch}", err: false)
+      Cmd.run(cmd: "git -C #{local_sdk_path} switch #{sdk_docs_branch}", err: false)
     else
       Cmd.run(cmd: "git -C #{local_sdk_path} switch -c #{sdk_docs_branch}", err: false)
     end
