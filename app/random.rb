@@ -469,7 +469,7 @@ class Commands
   def self.doc_publish_html(local_sdk_path, html_path)
     sdk_docs_branch = Constants::SDK_DOCS_BRANCH
     html_doc_src_path = "#{html_path}"
-    html_doc_dst_path = "#{local_sdk_path}/"
+    html_doc_dst_path = "#{local_sdk_path}"
 
     Logger.info("> Publish HTML documentation to be made available at https://sighticanalytics.github.io/documentation/irisintegrate/")
 
@@ -481,6 +481,9 @@ class Commands
     git_branch_ok = output.length == 1 && output.first.strip == sdk_docs_branch
     raise Exception.new("Failed to checkout git branch #{sdk_docs_branch} in #{local_sdk_path}") unless git_branch_ok
 
+    _, path = Cmd.run(cmd: "git rev-parse --show-toplevel", log: false)
+    Logger.info("<<<<<<<<< #{path} .... #{local_sdk_path}")
+
     # Remove everything to be able to serve only HTML documentation
     Cmd.run(cmd: "git -C #{local_sdk_path} rm -rf .", log: false)
 
@@ -490,7 +493,7 @@ class Commands
     FileUtils.rm_r("#{html_doc_dst_path}") if File.exist?(html_doc_dst_path)
     FileUtils.cp_r("#{html_doc_src_path}/.", html_doc_dst_path)
 
-    Logger.info("  -> Create commit and push to github on branch #{sdk_docs_branch}")
+    #Logger.info("  -> Create commit and push to github on branch #{sdk_docs_branch}")
     env = {"GIT_COMMITTER_NAME"=>"Sightic", "GIT_COMMITTER_EMAIL"=>"noreply@sightic.com"}
     Cmd.run(cmd: "git -C #{local_sdk_path} add .", log: false)
     Cmd.run(cmd: "git -C #{local_sdk_path} commit -m 'Update documentation' --author 'Sightic <noreply@sightic.com>'", env: env, log: false)
