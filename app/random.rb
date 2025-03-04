@@ -464,6 +464,7 @@ class Commands
     end
   end
 
+
   # Publish HTML documentation
   def self.doc_publish_html(local_sdk_path, html_path)
     sdk_docs_branch = Constants::SDK_DOCS_BRANCH
@@ -486,11 +487,11 @@ class Commands
     Cmd.run(cmd: "ls", cd: "android-docs")
 
     # Move new docs to root and create commit
-    Logger.info("  -> Move docs to root")
-    move_command = "mv #{html_path}/* #{Dir.pwd}"
-    remove_command = "rmdir #{html_path}"
-    Cmd.run(cmd: move_command)
-    Cmd.run(cmd: remove_command)
+   # Logger.info("  -> Move docs to root")
+   # move_command = "mv #{html_path}/* #{Dir.pwd}"
+    #remove_command = "rmdir #{html_path}"
+    #Cmd.run(cmd: move_command)
+    #Cmd.run(cmd: remove_command)
 
     Logger.info("  -> Create commit and push to github on branch #{sdk_docs_branch}")
     env = {"GIT_COMMITTER_NAME"=>"Sightic", "GIT_COMMITTER_EMAIL"=>"noreply@sightic.com"}
