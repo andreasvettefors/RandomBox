@@ -469,7 +469,7 @@ class Commands
   def self.doc_publish_html(local_sdk_path, html_path)
     sdk_docs_branch = Constants::SDK_DOCS_BRANCH
     html_doc_src_path = "#{html_path}"
-    html_doc_dst_path = "#{local_sdk_path}/."
+    html_doc_dst_path = "#{local_sdk_path}"
 
     Logger.info("> Publish HTML documentation to be made available at https://sighticanalytics.github.io/documentation/irisintegrate/")
 
@@ -481,7 +481,7 @@ class Commands
     git_branch_ok = output.length == 1 && output.first.strip == sdk_docs_branch
     raise Exception.new("Failed to checkout git branch #{sdk_docs_branch} in #{local_sdk_path}") unless git_branch_ok
 
-    _, path = Cmd.run(cmd: "git rev-parse --show-toplevel", log: false)
+    _, path = Cmd.run(cmd: "git #{local_sdk_path} rev-parse --show-toplevel", log: false)
     Logger.info("<<<<<<<<< #{path} .... #{local_sdk_path}")
 
     # Remove everything to be able to serve only HTML documentation
