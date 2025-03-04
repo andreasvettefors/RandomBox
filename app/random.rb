@@ -469,7 +469,7 @@ class Commands
   def self.doc_publish_html(local_sdk_path, html_path)
     sdk_docs_branch = Constants::SDK_DOCS_BRANCH
     html_doc_src_path = "#{html_path}"
-    html_doc_dst_path = "#{local_sdk_path}/docs"
+    html_doc_dst_path = "#{local_sdk_path}"
 
     Logger.info("> Publish HTML documentation to be made available at https://sighticanalytics.github.io/documentation/irisintegrate/")
 
@@ -484,20 +484,11 @@ class Commands
     # Remove everything to be able to serve only HTML documentation
     Cmd.run(cmd: "git -C #{local_sdk_path} rm -rf .", log: false)
 
-    Cmd.run(cmd: "ls", cd: "android-docs")
-
     # Copy new docs and create commit
     Logger.info("  -> Copy docs from #{html_doc_src_path} to #{html_doc_dst_path}")
 
     FileUtils.rm_r("#{html_doc_dst_path}") if File.exist?(html_doc_dst_path)
     FileUtils.cp_r("#{html_doc_src_path}/.", html_doc_dst_path)
-
-    # Move new docs to root and create commit
-   # Logger.info("  -> Move docs to root")
-   # move_command = "mv #{html_path}/* #{Dir.pwd}"
-    #remove_command = "rmdir #{html_path}"
-    #Cmd.run(cmd: move_command)
-    #Cmd.run(cmd: remove_command)
 
     Logger.info("  -> Create commit and push to github on branch #{sdk_docs_branch}")
     env = {"GIT_COMMITTER_NAME"=>"Sightic", "GIT_COMMITTER_EMAIL"=>"noreply@sightic.com"}
