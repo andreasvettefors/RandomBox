@@ -483,14 +483,14 @@ class Commands
     # Remove everything to be able to serve only HTML documentation
     Cmd.run(cmd: "git -C #{local_sdk_path} rm -rf .", log: false)
 
-    Cmd.run(cmd: "ls", log: false)
+    Cmd.run(cmd: "ls")
 
     # Move new docs to root and create commit
     Logger.info("  -> Move docs to root")
     move_command = "mv #{html_path}/* ."
     remove_command = "rmdir #{html_path}"
-    Cmd.run(cmd: move_command, log: false)
-    Cmd.run(cmd: remove_command, log: false)
+    Cmd.run(cmd: move_command)
+    Cmd.run(cmd: remove_command)
 
     Logger.info("  -> Create commit and push to github on branch #{sdk_docs_branch}")
     env = {"GIT_COMMITTER_NAME"=>"Sightic", "GIT_COMMITTER_EMAIL"=>"noreply@sightic.com"}
