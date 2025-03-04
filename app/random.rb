@@ -23,10 +23,10 @@ end
 module Paths
   FILE_GHTOKEN = ".githubtoken.txt"
 
-  FILE_SDK_RELEASE_AAR = "build/outputs/aar/app-release.aar"
   FILE_SDK_REPOSITORY_ZIP = "#{Dir.home}/.m2/repository/IRISintegrate.zip"
 
-  PATH_SDK_REPOSITORY = "#{Dir.home}/.m2/repository"
+  DIR_SDK_REPOSITORY = "#{Dir.home}/.m2/repository"
+  DIR_SDK_DOCS = "android-docs"
 
   PATH_REPO_DEV = "#{Constants::GIT_OWNER}/#{Constants::GIT_REPO_DEV}"
   URL_REPO_DEV = "#{Constants::GIT_HOST}/#{PATH_REPO_DEV}"
@@ -300,7 +300,7 @@ class Commands
       File.delete(zip_file_path) if File.exist?(zip_file_path)
 
       command = "zip -r IRISintegrate.zip se"
-      success, _ = Cmd.run(cmd: command, cd: Paths::PATH_SDK_REPOSITORY )
+      success, _ = Cmd.run(cmd: command, cd: Paths::DIR_SDK_REPOSITORY )
       raise Exception.new("Failed to create IRISintegrate.zip") unless success
       return zip_file_path
   end
@@ -321,7 +321,7 @@ class Commands
     raise Exception.new("Failed to retrieve github token") unless success
     token = token.first.strip
 
-    _, output = Cmd.run(cmd: "mktemp -d -t sightic-XXX", log: false)
+    _, output = Cmd.run(cmd: "mktemp -d -t sightic", log: false)
     temp_dir = output.first.strip
     repo_dir = "#{temp_dir}/#{repo_name}"
 
@@ -421,6 +421,29 @@ class Commands
               "--title #{version}"
     Cmd.run(cmd: command)
   end
+
+  # Generate api docs
+  def self.doc_generate_api()
+      Logger.info("> Generate api docs")
+      Cmd.run(cmd: "../gradlew dokkaGenerate")
+  end
+
+  # Preview mkdocs static html page
+  def self.doc_preview_html()
+      url = "http://localhost:8000"
+      Logger.info("> Serve static HTML pages at #{url}")
+      dir_docs = Paths::DIR_SDK_DOCS
+      Cmd.run(cmd: "pip3 install mkdocs-material", cd: dir_docs)
+      Cmd.run(cmd: "mkdocs serve", cd: dir_docs)
+  end
+
+    # Generate mkdocs static html page
+  def self.doc_generate_html()
+      Logger.info("> Generate html static page")
+      dir_docs = Paths::DIR_SDK_DOCS
+      Cmd.run(cmd: "pip3 install mkdocs-material", cd: dir_docs)
+      Cmd.run(cmd: "mkdocs build", cd: dir_docs)
+  end
 end
 
 # Class containing methods for each subcommand the script supports
@@ -430,6 +453,8 @@ class Subcommands
     puts("")
     puts("Commands:")
     puts("  publish         Build and publish repository release to iris-integrate-android-dev")
+    puts("  docs preview    Generate and preview docs locally")
+    puts("  docs publish    Publish sdk HTML documentation")
     puts()
     puts("  build           Build sdk library zip")
     puts("  clean           Clean up intermediate build files")
@@ -468,12 +493,35 @@ class Subcommands
 
     Commands.create_new_sdk_release(sdk_path, sdk_repo_url, version, [sdk_zip_path])
   end
+
+  def self.docs_preview()
+      Logger.info("Build and preview docs")
+      Commands.doc_generate_api()
+      Commands.doc_preview_html()
+  end
+
+  def self.docs_publish()
+    Logger.info("Build and publish docs")
+    Commands.doc_generate_api()
+    Commands.doc_generate_html()
+  end
 end
 
 def io(argv)
   case cmd = argv.shift
   when "publish"
     Subcommands.publish()
+
+  when "docs"
+    case docs_cmd = argv.shift
+    when "preview"
+      Subcommands.docs_preview()
+    when "publish"
+      Subcommands.docs_publish()
+    else
+      Subcommands.help()
+    end
+
   when "build"
     Subcommands.build()
   when "clean"

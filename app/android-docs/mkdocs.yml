@@ -1,6 +1,6 @@
-site_name: My Docs
+site_name: Random box
 
-site: html
+site_dir: html
 
 theme:
   name: material
@@ -33,6 +33,6 @@ markdown_extensions:
 
 nav:
   - Welcome: index.md
-  - Api reference: Api reference/index.html
+  - Api reference: api/index.html
 
 

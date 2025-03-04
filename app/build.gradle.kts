@@ -44,22 +44,12 @@ android {
 
 dokka {
     dokkaSourceSets.main {
-
-        /*perPackageOption {
-// Match all packages and suppress them
-            matchingRegex.set("(.*?)")
-            suppress.set(true)
-        }*/
-
-        perPackageOption {
-// Match all packages and suppress them
-            matchingRegex.set("(\\S*randombox.\\S*)")
-            suppress.set(false)
-        }
-
-        // contains descriptions for the module and the packages
+        moduleName.set("Random box")
     }
 
+    dokkaPublications.html {
+        outputDirectory.set(file("android-docs/docs/api"))
+    }
 }
 
 
@@ -85,7 +75,7 @@ afterEvaluate {
                     developers {
                         developer {
                             name.set("A Random box")
-                            email.set("randomvox@randombox.com")
+                            email.set("randombox@randombox.com")
                             organization.set("Random box")
                             organizationUrl.set("https://www.randombox.com/")
                         }

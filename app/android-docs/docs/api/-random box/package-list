@@ -1,0 +1,26 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:se.vettefors.randombox.kalle////PointingToDeclaration/-random box/se.vettefors.randombox.kalle/index.html
+$dokka.location:se.vettefors.randombox.kalle/SomeRandomClass///PointingToDeclaration/-random box/se.vettefors.randombox.kalle/-some-random-class/index.html
+$dokka.location:se.vettefors.randombox.kalle/SomeRandomClass/SomeRandomClass/#kotlin.String#kotlin.String#kotlin.Boolean/PointingToDeclaration/-random box/se.vettefors.randombox.kalle/-some-random-class/-some-random-class.html
+$dokka.location:se.vettefors.randombox.kalle/SomeRandomClass/message/#/PointingToDeclaration/-random box/se.vettefors.randombox.kalle/-some-random-class/message.html
+$dokka.location:se.vettefors.randombox.kalle/SomeRandomClass/somethingElse/#/PointingToDeclaration/-random box/se.vettefors.randombox.kalle/-some-random-class/something-else.html
+$dokka.location:se.vettefors.randombox.kalle/SomeRandomClass/title/#/PointingToDeclaration/-random box/se.vettefors.randombox.kalle/-some-random-class/title.html
+$dokka.location:se.vettefors.randombox.pelle////PointingToDeclaration/-random box/se.vettefors.randombox.pelle/index.html
+$dokka.location:se.vettefors.randombox.pelle/Hello///PointingToDeclaration/-random box/se.vettefors.randombox.pelle/-hello/index.html
+$dokka.location:se.vettefors.randombox.pelle/Hello/makeFocused/#/PointingToDeclaration/-random box/se.vettefors.randombox.pelle/-hello/make-focused.html
+$dokka.location:se.vettefors.randombox////PointingToDeclaration/-random box/se.vettefors.randombox/index.html
+$dokka.location:se.vettefors.randombox//RandomBox/#kotlin.String/PointingToDeclaration/-random box/se.vettefors.randombox/-random-box.html
+$dokka.location:se.vettefors.randombox/AnotherClass///PointingToDeclaration/-random box/se.vettefors.randombox/-another-class/index.html
+$dokka.location:se.vettefors.randombox/AnotherClass/AnotherClass/#kotlin.String/PointingToDeclaration/-random box/se.vettefors.randombox/-another-class/-another-class.html
+$dokka.location:se.vettefors.randombox/AnotherClass/id/#/PointingToDeclaration/-random box/se.vettefors.randombox/-another-class/id.html
+$dokka.location:se.vettefors.randombox/SighticResult.Failure///PointingToDeclaration/-random box/se.vettefors.randombox/-sightic-result/-failure/index.html
+$dokka.location:se.vettefors.randombox/SighticResult.Failure/Failure/#kotlin.Boolean/PointingToDeclaration/-random box/se.vettefors.randombox/-sightic-result/-failure/-failure.html
+$dokka.location:se.vettefors.randombox/SighticResult.Failure/error/#/PointingToDeclaration/-random box/se.vettefors.randombox/-sightic-result/-failure/error.html
+$dokka.location:se.vettefors.randombox/SighticResult.Success///PointingToDeclaration/-random box/se.vettefors.randombox/-sightic-result/-success/index.html
+$dokka.location:se.vettefors.randombox/SighticResult.Success/Success/#TypeParam(bounds=[kotlin.Any?])/PointingToDeclaration/-random box/se.vettefors.randombox/-sightic-result/-success/-success.html
+$dokka.location:se.vettefors.randombox/SighticResult.Success/value/#/PointingToDeclaration/-random box/se.vettefors.randombox/-sightic-result/-success/value.html
+$dokka.location:se.vettefors.randombox/SighticResult///PointingToDeclaration/-random box/se.vettefors.randombox/-sightic-result/index.html
+se.vettefors.randombox
+se.vettefors.randombox.kalle
+se.vettefors.randombox.pelle
