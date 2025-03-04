@@ -17,7 +17,7 @@ module Constants
   GIT_HOST = "https://github.com"
   GIT_OWNER = "andreasvettefors"
   GIT_REPO_DEV = "RandomBox"
-  SDK_DOCS_BRANCH = "docs"
+  SDK_DOCS_BRANCH = "site"
 end
 
 # Constants for paths and files
