@@ -469,7 +469,7 @@ class Commands
   def self.doc_publish_html(local_sdk_path, html_path)
     sdk_docs_branch = Constants::SDK_DOCS_BRANCH
     html_doc_src_path = "#{html_path}"
-    html_doc_dst_path = "#{local_sdk_path}/nice"
+    html_doc_dst_path = "#{local_sdk_path}/."
 
     Logger.info("> Publish HTML documentation to be made available at https://sighticanalytics.github.io/documentation/irisintegrate/")
 
