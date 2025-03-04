@@ -33,6 +33,7 @@ markdown_extensions:
 
 nav:
   - Welcome: index.md
+  - Code Examples: code_examples.md
   - Api reference: api/index.html
 
 
