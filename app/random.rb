@@ -485,9 +485,10 @@ class Commands
 
     # Move new docs to root and create commit
     Logger.info("  -> Move docs to root")
-
-    move_command = "mv #{DIR_HTML_DOCUMENTATION}/* ."
-    remove_command = "rmdir #{DIR_HTML_DOCUMENTATION}"
+    move_command = "mv #{html_path}/* ."
+    remove_command = "rmdir #{html_path}"
+    Cmd.run(cmd: move_command, log: false)
+    Cmd.run(cmd: remove_command, log: false)
 
     Logger.info("  -> Create commit and push to github on branch #{sdk_docs_branch}")
     env = {"GIT_COMMITTER_NAME"=>"Sightic", "GIT_COMMITTER_EMAIL"=>"noreply@sightic.com"}
