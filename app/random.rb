@@ -483,6 +483,8 @@ class Commands
     # Remove everything to be able to serve only HTML documentation
     Cmd.run(cmd: "git -C #{local_sdk_path} rm -rf .", log: false)
 
+    Cmd.run(cmd: "ls", log: false)
+
     # Move new docs to root and create commit
     Logger.info("  -> Move docs to root")
     move_command = "mv #{html_path}/* ."
