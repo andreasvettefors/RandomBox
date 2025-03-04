@@ -458,9 +458,9 @@ class Commands
 
     # Switch to docs branch, create branch if it does not exist yet
     if sdk_docs_branch_exists
-      Cmd.run(cmd: "git -C #{local_sdk_path} switch #{sdk_docs_branch}", err: false)
+      Cmd.run(cmd: "git -C #{local_sdk_path} switch --orphan #{sdk_docs_branch}", err: false)
     else
-      Cmd.run(cmd: "git -C #{local_sdk_path} switch -c #{sdk_docs_branch}", err: false)
+      Cmd.run(cmd: "git -C #{local_sdk_path} switch -c --orphan #{sdk_docs_branch}", err: false)
     end
   end
 
@@ -480,11 +480,14 @@ class Commands
     git_branch_ok = output.length == 1 && output.first.strip == sdk_docs_branch
     raise Exception.new("Failed to checkout git branch #{sdk_docs_branch} in #{local_sdk_path}") unless git_branch_ok
 
-    # Copy new docs and create commit
-    Logger.info("  -> Copy docs from #{html_doc_src_path} to #{html_doc_dst_path}")
+    # Remove everything to be able to serve only HTML documentation
+    Cmd.run(cmd: "git -C #{local_sdk_path} rm -rf .", log: false)
 
-    FileUtils.rm_r("#{html_doc_dst_path}") if File.exist?(html_doc_dst_path)
-    FileUtils.cp_r("#{html_doc_src_path}/.", html_doc_dst_path)
+    # Move new docs to root and create commit
+    Logger.info("  -> Move docs to root")
+
+    move_command = "mv #{DIR_HTML_DOCUMENTATION}/* ."
+    remove_command = "rmdir #{DIR_HTML_DOCUMENTATION}"
 
     Logger.info("  -> Create commit and push to github on branch #{sdk_docs_branch}")
     env = {"GIT_COMMITTER_NAME"=>"Sightic", "GIT_COMMITTER_EMAIL"=>"noreply@sightic.com"}
