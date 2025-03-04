@@ -17,6 +17,7 @@ module Constants
   GIT_HOST = "https://github.com"
   GIT_OWNER = "andreasvettefors"
   GIT_REPO_DEV = "RandomBox"
+  SDK_DOCS_BRANCH = "docs"
 end
 
 # Constants for paths and files
@@ -27,6 +28,7 @@ module Paths
 
   DIR_SDK_REPOSITORY = "#{Dir.home}/.m2/repository"
   DIR_SDK_DOCS = "android-docs"
+  DIR_HTML_DOCUMENTATION = "android-docs/html"
 
   PATH_REPO_DEV = "#{Constants::GIT_OWNER}/#{Constants::GIT_REPO_DEV}"
   URL_REPO_DEV = "#{Constants::GIT_HOST}/#{PATH_REPO_DEV}"
@@ -428,7 +430,7 @@ class Commands
       Cmd.run(cmd: "../gradlew dokkaGenerate")
   end
 
-  # Preview mkdocs static html page
+  # Preview HTML documentation
   def self.doc_preview_html()
       url = "http://localhost:8000"
       Logger.info("> Serve static HTML pages at #{url}")
@@ -437,12 +439,58 @@ class Commands
       Cmd.run(cmd: "mkdocs serve", cd: dir_docs)
   end
 
-    # Generate mkdocs static html page
+  # Generate HTML documentation
   def self.doc_generate_html()
       Logger.info("> Generate html static page")
       dir_docs = Paths::DIR_SDK_DOCS
       Cmd.run(cmd: "pip3 install mkdocs-material", cd: dir_docs)
       Cmd.run(cmd: "mkdocs build", cd: dir_docs)
+  end
+
+  # Checkout the SDK_DOCS_BRANCH in the SDK repository
+  def self.doc_checkout_docs_branch(local_sdk_path)
+    sdk_docs_branch = Constants::SDK_DOCS_BRANCH
+    Logger.info("> Checkout #{sdk_docs_branch} branch in git repository #{local_sdk_path}")
+
+    # Check if the docs branch exists in the sdk repository
+    _, output = Cmd.run(cmd: "git -C #{local_sdk_path} ls-remote --heads origin refs/heads/#{sdk_docs_branch}", log: false)
+    sdk_docs_branch_exists = output.length > 0
+
+    # Switch to docs branch, create branch if it does not exist yet
+    if sdk_docs_branch_exists
+      Cmd.run(cmd: "git -C #{local_sdk_path} switch #{sdk_docs_branch}", err: false)
+    else
+      Cmd.run(cmd: "git -C #{local_sdk_path} switch -c #{sdk_docs_branch}", err: false)
+    end
+  end
+
+  # Publish HTML documentation
+  def self.doc_publish_html(local_sdk_path, html_path)
+    sdk_docs_branch = Constants::SDK_DOCS_BRANCH
+    html_doc_src_path = "#{html_path}"
+    html_doc_dst_path = "#{local_sdk_path}/docs"
+
+    Logger.info("> Publish HTML documentation to be made available at https://sighticanalytics.github.io/documentation/irisintegrate/")
+
+    raise Exception.new("HTML documentation missing: #{html_doc_src_path}") unless File.exist?(html_doc_src_path)
+    Logger.info("  -> HTML documentation: #{html_doc_src_path}")
+
+    # Verify that the docs branch has been checked out properly
+    _, output = Cmd.run(cmd: "git -C #{local_sdk_path} rev-parse --abbrev-ref HEAD", log: false)
+    git_branch_ok = output.length == 1 && output.first.strip == sdk_docs_branch
+    raise Exception.new("Failed to checkout git branch #{sdk_docs_branch} in #{local_sdk_path}") unless git_branch_ok
+
+    # Copy new docs and create commit
+    Logger.info("  -> Copy docs from #{html_doc_src_path} to #{html_doc_dst_path}")
+
+    FileUtils.rm_r("#{html_doc_dst_path}") if File.exist?(html_doc_dst_path)
+    FileUtils.cp_r("#{html_doc_src_path}/.", html_doc_dst_path)
+
+    Logger.info("  -> Create commit and push to github on branch #{sdk_docs_branch}")
+    env = {"GIT_COMMITTER_NAME"=>"Sightic", "GIT_COMMITTER_EMAIL"=>"noreply@sightic.com"}
+    Cmd.run(cmd: "git -C #{local_sdk_path} add .", log: false)
+    Cmd.run(cmd: "git -C #{local_sdk_path} commit -m 'Update documentation' --author 'Sightic <noreply@sightic.com>'", env: env, log: false)
+    Cmd.run(cmd: "git -C #{local_sdk_path} push origin #{sdk_docs_branch}", err: false)
   end
 end
 
@@ -501,9 +549,19 @@ class Subcommands
   end
 
   def self.docs_publish()
-    Logger.info("Build and publish docs")
+    Logger.info("Build and publish docs to DEV")
+    sdk_repo_url = Paths::URL_REPO_DEV
+
+    Commands.github_authenticate()
+
+    # Build docs
     Commands.doc_generate_api()
     Commands.doc_generate_html()
+
+    #Publish
+    sdk_path = Commands.clone_sdk_repo(sdk_repo_url)
+    Commands.doc_checkout_docs_branch(sdk_path)
+    Commands.doc_publish_html(sdk_path, Paths::DIR_HTML_DOCUMENTATION)
   end
 end
 
