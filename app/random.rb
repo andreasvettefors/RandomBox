@@ -486,6 +486,12 @@ class Commands
 
     Cmd.run(cmd: "ls", cd: "android-docs")
 
+    # Copy new docs and create commit
+    Logger.info("  -> Copy docs from #{html_doc_src_path} to #{html_doc_dst_path}")
+
+    FileUtils.rm_r("#{html_doc_dst_path}") if File.exist?(html_doc_dst_path)
+    FileUtils.cp_r("#{html_doc_src_path}/.", html_doc_dst_path)
+
     # Move new docs to root and create commit
    # Logger.info("  -> Move docs to root")
    # move_command = "mv #{html_path}/* #{Dir.pwd}"
