@@ -28,8 +28,10 @@ module Paths
 
   DIR_SDK_REPOSITORY = "#{Dir.home}/.m2/repository"
   DIR_SDK_DOCS = "android-docs"
+  DIR_SDK_ZIP = "#{Dir.home}"
   DIR_HTML_DOCUMENTATION = "android-docs/html"
 
+  PATH_SDK_ZIP = "#{Dir.home}/IRISintegrate.docs.zip"
   PATH_REPO_DEV = "#{Constants::GIT_OWNER}/#{Constants::GIT_REPO_DEV}"
   URL_REPO_DEV = "#{Constants::GIT_HOST}/#{PATH_REPO_DEV}"
 end
@@ -449,11 +451,11 @@ class Commands
 
   # Create zipped HTML documentation
   def self.doc_create_documentation_zip()
-      zip_file_path = Paths::DIR_SDK_DOCS
+      zip_file_path = Paths::PATH_SDK_ZIP
       Logger.info("> Create zip of IRISintegrate docs html")
       File.delete(zip_file_path) if File.exist?(zip_file_path)
 
-      command = "sudo zip -r IRISintegrate.docs.zip html"
+      command = "zip -r #{zip_file_path} html"
       success, _ = Cmd.run(cmd: command, cd: Paths::DIR_SDK_DOCS )
       raise Exception.new("Failed to create IRISintegrate.docs.zip") unless success
       return zip_file_path
