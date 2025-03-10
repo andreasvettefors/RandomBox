@@ -24,7 +24,7 @@ end
 module Paths
   FILE_GHTOKEN = ".githubtoken.txt"
 
-  FILE_SDK_REPOSITORY_ZIP = "#{Dir.home}/.m2/repository/IRISintegrate.zip"
+  FILE_SDK_REPOSITORY_ZIP = "#{Dir.home}/.m2/repository/IRISintegrate.sdk.zip"
 
   DIR_SDK_REPOSITORY = "#{Dir.home}/.m2/repository"
   DIR_SDK_DOCS = "android-docs"
@@ -301,9 +301,9 @@ class Commands
       Logger.info("> Create zip of IRISintegrate sdk repository")
       File.delete(zip_file_path) if File.exist?(zip_file_path)
 
-      command = "zip -r IRISintegrate.zip se"
+      command = "zip -r IRISintegrate.sdk.zip se"
       success, _ = Cmd.run(cmd: command, cd: Paths::DIR_SDK_REPOSITORY )
-      raise Exception.new("Failed to create IRISintegrate.zip") unless success
+      raise Exception.new("Failed to create IRISintegrate.sdk.zip") unless success
       return zip_file_path
   end
 
@@ -447,6 +447,18 @@ class Commands
       Cmd.run(cmd: "mkdocs build", cd: dir_docs)
   end
 
+  # Create zipped HTML documentation
+  def self.doc_create_documentation_zip()
+      zip_file_path = Paths::DIR_SDK_DOCS
+      Logger.info("> Create zip of IRISintegrate docs html")
+      File.delete(zip_file_path) if File.exist?(zip_file_path)
+
+      command = "zip -r IRISintegrate.docs.zip html"
+      success, _ = Cmd.run(cmd: command, cd: Paths::DIR_SDK_DOCS )
+      raise Exception.new("Failed to create IRISintegrate.docs.zip") unless success
+      return zip_file_path
+  end
+
   # Checkout the SDK_DOCS_BRANCH in the SDK repository
   def self.doc_checkout_docs_branch(local_sdk_path)
     sdk_docs_branch = Constants::SDK_DOCS_BRANCH
@@ -463,7 +475,6 @@ class Commands
       Cmd.run(cmd: "git -C #{local_sdk_path} switch -c #{sdk_docs_branch}", err: false)
     end
   end
-
 
   # Publish HTML documentation
   def self.doc_publish_html(local_sdk_path, html_path)
@@ -534,6 +545,11 @@ class Subcommands
 
     sdk_repo_url = Paths::URL_REPO_DEV
 
+    # Create zipped sdk documentation
+    Command.doc_generate_api()
+    Commands.doc_generate_html()
+    doc_zip_path = Commands.doc_create_documentation_zip()
+
     # Created zipped sdk repository
     sdk_zip_path = build()
 
@@ -541,7 +557,7 @@ class Subcommands
     sdk_path = Commands.clone_sdk_repo(sdk_repo_url)
     Commands.check_new_sdk_version(sdk_path, version)
 
-    Commands.create_new_sdk_release(sdk_path, sdk_repo_url, version, [sdk_zip_path])
+    Commands.create_new_sdk_release(sdk_path, sdk_repo_url, version, [sdk_zip_path, doc_zip_path])
   end
 
   def self.docs_preview()
