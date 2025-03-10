@@ -546,7 +546,7 @@ class Subcommands
     sdk_repo_url = Paths::URL_REPO_DEV
 
     # Create zipped sdk documentation
-    Command.doc_generate_api()
+    # Command.doc_generate_api()
     #Commands.doc_generate_html()
     #doc_zip_path = Commands.doc_create_documentation_zip()
 
