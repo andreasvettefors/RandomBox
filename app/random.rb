@@ -546,18 +546,18 @@ class Subcommands
     sdk_repo_url = Paths::URL_REPO_DEV
 
     # Create zipped sdk documentation
-    # Command.doc_generate_api()
-    #Commands.doc_generate_html()
-    #doc_zip_path = Commands.doc_create_documentation_zip()
+    Commands.doc_generate_api()
+    Commands.doc_generate_html()
+    doc_zip_path = Commands.doc_create_documentation_zip()
 
     # Created zipped sdk repository
-    #sdk_zip_path = build()
+    sdk_zip_path = build()
 
     # Clone and verify dev release repository
-   # sdk_path = Commands.clone_sdk_repo(sdk_repo_url)
-    #Commands.check_new_sdk_version(sdk_path, version)
+    sdk_path = Commands.clone_sdk_repo(sdk_repo_url)
+    Commands.check_new_sdk_version(sdk_path, version)
 
-    #Commands.create_new_sdk_release(sdk_path, sdk_repo_url, version, [sdk_zip_path, doc_zip_path])
+    Commands.create_new_sdk_release(sdk_path, sdk_repo_url, version, [sdk_zip_path, doc_zip_path])
   end
 
   def self.docs_preview()
