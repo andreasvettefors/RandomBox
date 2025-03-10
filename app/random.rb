@@ -453,7 +453,7 @@ class Commands
       Logger.info("> Create zip of IRISintegrate docs html")
       File.delete(zip_file_path) if File.exist?(zip_file_path)
 
-      command = "zip -r IRISintegrate.docs.zip html"
+      command = "sudo zip -r IRISintegrate.docs.zip html"
       success, _ = Cmd.run(cmd: command, cd: Paths::DIR_SDK_DOCS )
       raise Exception.new("Failed to create IRISintegrate.docs.zip") unless success
       return zip_file_path
