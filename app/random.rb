@@ -548,7 +548,7 @@ class Subcommands
     # Create zipped sdk documentation
     Command.doc_generate_api()
     Commands.doc_generate_html()
-    doc_zip_path = Commands.doc_create_documentation_zip()
+    #doc_zip_path = Commands.doc_create_documentation_zip()
 
     # Created zipped sdk repository
     #sdk_zip_path = build()
